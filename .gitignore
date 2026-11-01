@@ -1,0 +1,13 @@
+﻿# OS / 编辑器
+Thumbs.db
+desktop.ini
+.DS_Store
+*.swp
+.idea/
+.vscode/
+
+# 构建产物 / 临时文件
+node_modules/
+dist/
+.tmp/
+*.log

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="color-scheme" content="light" />
+  <title>户型 3D 编辑器 · Three.js 白模</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <div id="app">
+    <canvas id="viewport"></canvas>
+
+    <header id="topbar">
+      <div class="brand">
+        <span class="brand-dot"></span>
+        <span class="brand-name">户型 3D 编辑器</span>
+        <span id="plan-name" class="brand-sub">现代简约 · 三室两厅两卫</span>
+      </div>
+      <div class="tools">
+        <div class="tool-group">
+          <button id="btn-add-wall"   class="tool" title="新增墙体 (W)">      <i class="ico">▭</i><span>新增墙体</span></button>
+          <button id="btn-add-door"   class="tool" title="新增门 (D)">        <i class="ico">▯</i><span>新增门</span></button>
+          <button id="btn-add-window" class="tool" title="新增窗 (N)">        <i class="ico">▤</i><span>新增窗</span></button>
+          <button id="btn-delete"     class="tool danger" title="删除选中 (Del)"><i class="ico">✕</i><span>删除</span></button>
+        </div>
+        <div class="tool-group">
+          <button id="btn-view-3d"   class="tool is-active" title="3D 透视视图">3D</button>
+          <button id="btn-view-2d"   class="tool" title="2D 顶视图">2D</button>
+          <button id="btn-wireframe" class="tool" title="线框 / 实体切换">线框</button>
+          <button id="btn-walk"      class="tool" title="第一人称漫游（带碰撞，不会穿墙）">漫游</button>
+          <button id="btn-wall-height" class="tool" title="墙体降高，便于俯视编辑">降墙</button>
+          <button id="btn-labels"    class="tool is-active" title="显示 / 隐藏房间标签">标签</button>
+          <button id="btn-reset-view" class="tool" title="重置视图 (R)">重置视图</button>
+        </div>
+        <div class="tool-group">
+          <button id="btn-export" class="tool" title="导出户型 JSON">导出 JSON</button>
+          <button id="btn-import" class="tool" title="导入户型 JSON">导入 JSON</button>
+          <button id="btn-save"   class="tool primary" title="保存方案到后端">保存方案</button>
+          <button id="btn-history" class="tool" title="历史方案">历史方案</button>
+        </div>
+      </div>
+    </header>
+
+    <aside id="inspector">
+      <div class="inspector-head">
+        <h2 id="inspector-title">属性面板</h2>
+        <button id="btn-close-panel" class="icon-btn" title="收起面板">✕</button>
+      </div>
+      <div id="inspector-empty" class="inspector-empty">
+        <div class="empty-ico">◫</div>
+        <p class="empty-title">未选中构件</p>
+        <p class="empty-desc">在场景中点选墙体 / 门 / 窗，即可在此编辑尺寸与材质。</p>
+        <ul class="tips">
+          <li>拖动已选中的墙体可整体移动</li>
+          <li>拖动橙色顶点手柄可修改轮廓</li>
+          <li>按住右键平移，滚轮缩放</li>
+        </ul>
+      </div>
+      <div id="inspector-body" class="inspector-body" hidden></div>
+      <div class="inspector-foot">
+        <button id="btn-focus" class="ghost">聚焦</button>
+        <button id="btn-dup" class="ghost">复制构件</button>
+      </div>
+    </aside>
+
+    <div id="hintbar">
+      <span id="mode-badge" class="badge">3D 透视</span>
+      <span id="hint-text">左键旋转 · 滚轮缩放 · 右键平移 · 点击构件选中</span>
+    </div>
+
+    <div id="toast" class="toast" hidden></div>
+
+    <!-- 第一人称漫游 HUD：准星 + 操作提示 + 退出 -->
+    <div id="walk-hud" class="walk-hud" hidden>
+      <div class="walk-cross">
+        <span></span><span></span>
+      </div>
+      <div class="walk-bar">
+        <span class="walk-key">W</span><span class="walk-key">A</span><span class="walk-key">S</span><span class="walk-key">D</span>
+        <span class="walk-tip">移动</span>
+        <span class="walk-sep"></span>
+        <span class="walk-tip">鼠标转视角 · Shift 加速 · 已开启碰撞，不会穿墙</span>
+        <button id="btn-walk-exit" class="walk-exit" title="退出漫游 (Esc)">退出漫游 Esc</button>
+      </div>
+    </div>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>正在构建户型…</p>
+    </div>
+
+    <div id="modal" class="modal" hidden>
+      <div class="modal-card">
+        <div class="modal-head">
+          <h3 id="modal-title">历史方案</h3>
+          <button id="btn-modal-close" class="icon-btn" title="关闭">✕</button>
+        </div>
+        <div id="modal-body" class="modal-body"></div>
+      </div>
+    </div>
+
+    <input id="file-input" type="file" accept="application/json,.json" hidden />
+  </div>
+
+  <script src="./vendor/three.min.js"></script>
+  <script src="./vendor/OrbitControls.js"></script>
+  <script src="./main.js"></script>
+  <script src="./editor.js"></script>
+</body>
+</html>
